@@ -13,8 +13,13 @@ Flow log data can be published to the following locations:
 
 Onece the flow log is created, We can retrieve and view the flow log records in the log group, bucket, or delivery stream that we configured.
 
-Using Flow logs , we do the below troubleshooting tasks tasks, such as:
+Using Flow logs , we can do the below troubleshooting tasks tasks:
 
-Diagnosing overly restrictive / blocking security group rules
-Monitoring the traffic that is reaching instance
-Determining the direction of the traffic to and from the network interfaces
+1. Diagnosing overly restrictive / blocking security group rules
+2. Monitoring the traffic that is reaching instance
+3. Determining the direction of the traffic to and from the network interfaces
+
+In this lab, we can setup the VPC , Subnets  , SG and EC2 instances and carry out the steps:
+
+Use the Cloudformation Template uploaded in this respository to setup the mentioned resources.
+
