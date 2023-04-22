@@ -25,10 +25,16 @@ We can create a flow log for a VPC, a subnet, or a network interface. If you cre
 
 Flow log data for a monitored network interface is recorded as flow log records, which are log events consisting of fields that describe the traffic flow.
 
+![image](https://user-images.githubusercontent.com/34744073/233807946-1bc28662-1cc5-4046-8bf7-61d90de64b1f.png)
+
+# Lab Instructions
+
 In this lab, we can setup the VPC , Subnets  , SG and EC2 instances and carry out the steps:
 
 Use the Cloudformation Template uploaded in this respository to setup the mentioned resources.
 
-![image](https://user-images.githubusercontent.com/34744073/233807946-1bc28662-1cc5-4046-8bf7-61d90de64b1f.png)
+![image](/lab1/abc.png)
+
+
 
 
