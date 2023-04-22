@@ -29,6 +29,6 @@ In this lab, we can setup the VPC , Subnets  , SG and EC2 instances and carry ou
 
 Use the Cloudformation Template uploaded in this respository to setup the mentioned resources.
 
-https://docs.aws.amazon.com/images/vpc/latest/userguide/images/flow-logs-diagram-cw.png![image](https://user-images.githubusercontent.com/34744073/233807946-1bc28662-1cc5-4046-8bf7-61d90de64b1f.png)
+![image](https://user-images.githubusercontent.com/34744073/233807946-1bc28662-1cc5-4046-8bf7-61d90de64b1f.png)
 
 
