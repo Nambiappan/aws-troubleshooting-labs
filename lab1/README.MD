@@ -33,7 +33,7 @@ In this lab, we can setup the VPC , Subnets  , SG and EC2 instances and carry ou
 
 Use the Cloudformation Template uploaded in this respository to setup the mentioned resources.
 
-![image](/lab1/abc.png)
+![image](/lab1/cloudformation-vpc.png)
 
 
 
