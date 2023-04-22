@@ -25,11 +25,11 @@ We can create a flow log for a VPC, a subnet, or a network interface. If you cre
 
 Flow log data for a monitored network interface is recorded as flow log records, which are log events consisting of fields that describe the traffic flow.
 
-![image](/lab1/flow-logs-diagram-cw.png)
+![image](/lab1/flow-logs-diagram-cw.png) ![image][/lab1/vpc-flow-logs.png]
 
 # Example
 
-
+![image](/lab1/sample-flowlogs.png)
 
 # Lab Instructions
 
