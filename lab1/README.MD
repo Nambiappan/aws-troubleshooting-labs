@@ -1,5 +1,5 @@
 
-# Analyze VPC Flowlogs using Cloudwatch Insights
+# Lab1: Analyze VPC Flowlogs using Cloudwatch Insights
 
 Reference : https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html
 
@@ -25,7 +25,11 @@ We can create a flow log for a VPC, a subnet, or a network interface. If you cre
 
 Flow log data for a monitored network interface is recorded as flow log records, which are log events consisting of fields that describe the traffic flow.
 
-![image](https://user-images.githubusercontent.com/34744073/233807946-1bc28662-1cc5-4046-8bf7-61d90de64b1f.png)
+![image](/lab1/flow-logs-diagram-cw.png)
+
+# Example
+
+
 
 # Lab Instructions
 
