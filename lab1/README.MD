@@ -1,5 +1,5 @@
 
-Analyze VPC Flowlogs using Cloudwatch Insights
+#Analyze VPC Flowlogs using Cloudwatch Insights
 
 Reference : https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html
 
@@ -19,7 +19,16 @@ Using Flow logs , we can do the below troubleshooting tasks tasks:
 2. Monitoring the traffic that is reaching instance
 3. Determining the direction of the traffic to and from the network interfaces
 
+#Flow logs basics
+
+We can create a flow log for a VPC, a subnet, or a network interface. If you create a flow log for a subnet or VPC, each network interface in that subnet or VPC is monitored.
+
+Flow log data for a monitored network interface is recorded as flow log records, which are log events consisting of fields that describe the traffic flow.
+
 In this lab, we can setup the VPC , Subnets  , SG and EC2 instances and carry out the steps:
 
 Use the Cloudformation Template uploaded in this respository to setup the mentioned resources.
+
+https://docs.aws.amazon.com/images/vpc/latest/userguide/images/flow-logs-diagram-cw.png![image](https://user-images.githubusercontent.com/34744073/233807946-1bc28662-1cc5-4046-8bf7-61d90de64b1f.png)
+
 
