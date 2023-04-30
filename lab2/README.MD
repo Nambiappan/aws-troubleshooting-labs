@@ -37,6 +37,7 @@ Use the Cloudformation Template uploaded in this respository to setup the mentio
 
 Once you provision the required stack, try to access the Tomcat Web Server running on EC2 instance using EC2 Public IP address.
 
+Troubleshoot and fix the root cause for the access issue.
 
 ![image](/lab2/cloudformation-vpc.png)
 
