@@ -1,0 +1,167 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation template to launch EC2 instances. **WARNING** This template creates a VPC, public subnet, Internet Gateway, 2 EC2s, CloudWatch Log Group, and associated route tables and permissions.
+
+#-----------------------------------------------------------
+# Parameters
+#-----------------------------------------------------------
+Parameters :
+  LatestAmazonLinuxAmiId :
+    # Use public Systems Manager Parameter
+    Type : 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+
+# Calling AMI public parameters
+# https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-public-parameters-ami.html
+
+Resources:
+
+  #-------------------------------------------------
+  # VPC and required resources 
+  #-------------------------------------------------
+  VPC:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: aws-troubleshooting-labs-lab1
+  InternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: aws-troubleshooting-labs-lab1
+  VPCGatewayAttachment:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+  SubnetPublic:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select [0, !GetAZs '']
+      CidrBlock: 10.0.0.0/20
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: aws-troubleshooting-labs-lab1
+  RouteTablePublic:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: aws-troubleshooting-labs-lab1
+  RouteTableAssociationPublic:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref SubnetPublic
+      RouteTableId: !Ref RouteTablePublic
+  RouteTablePublicInternetRoute:
+    Type: 'AWS::EC2::Route'
+    DependsOn: VPCGatewayAttachment
+    Properties:
+      RouteTableId: !Ref RouteTablePublic
+      DestinationCidrBlock: '0.0.0.0/0'
+      GatewayId: !Ref InternetGateway
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'Security Group for aws-troubleshooting-labs-lab1 test instances'
+      GroupName: aws-troubleshooting-labs-lab1
+      SecurityGroupEgress:
+        - Description: Egress to allow CloudWatch agent to communicate with CloudWatch service
+          IpProtocol: 6
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: aws-troubleshooting-labs-lab1
+      VpcId: !Ref VPC
+  #-------------------------------------------------
+  # IAM ROLE FOR EC2 Instance
+  #-------------------------------------------------
+  InstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: SSMCloudWatchInstanceRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: '/'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/AmazonSSMPatchAssociation
+      Tags:
+        - Key: Name
+          Value: aws-troubleshooting-labs-lab1
+
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: SSMCloudWatchInstanceRole
+      Path: '/'
+      Roles:
+        - !Ref InstanceRole
+  #-------------------------------------------------
+  # EC2 instance using the latest Amazon Linux AMI
+  #-------------------------------------------------
+  LinuxEc2Instance1:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.small
+      ImageId: !Ref LatestAmazonLinuxAmiId
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          GroupSet:
+            - !Ref InstanceSecurityGroup
+          SubnetId: !Ref SubnetPublic
+      UserData:
+        Fn::Base64:
+          !Sub |
+            #!/bin/bash
+            #Cloudformation Stack: ${AWS::StackName}
+            yum update -y
+            yum install -y tomcat tomcat-webapps
+            systemctl start tomcat.service
+      IamInstanceProfile: !Ref InstanceProfile
+      Tags:
+        - Key: Name
+          Value: ApplicationServer1
+
+  LinuxEc2Instance2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.small
+      ImageId: !Ref LatestAmazonLinuxAmiId
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          GroupSet:
+            - !Ref InstanceSecurityGroup
+          SubnetId: !Ref SubnetPublic
+      UserData:
+        Fn::Base64:
+          !Sub |
+            #!/bin/bash
+            #Cloudformation Stack: ${AWS::StackName}
+            yum update -y
+            yum install -y tomcat tomcat-webapps
+            systemctl start tomcat.service
+      IamInstanceProfile: !Ref InstanceProfile
+      Tags:
+        - Key: Name
+          Value: ApplicationServer2
