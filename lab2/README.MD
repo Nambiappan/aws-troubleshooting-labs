@@ -17,8 +17,11 @@ Otherwise, Reachability Analyzer identifies the blocking component.
 # Tasks
 
 Step 1: Create and analyze a path
+
 Step 2: View the results of the path analysis
+
 Step 3: Change the network configuration and analyze the path
+
 Step 4: Delete the path
 
 
